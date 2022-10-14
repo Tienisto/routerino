@@ -40,6 +40,16 @@ extension NamedRoutesExt on BuildContext {
       (route) => false,
     );
   }
+
+  /// Pops the most recent route
+  void pop<T>([T? result]) {
+    Navigator.of(this).pop(result);
+  }
+
+  /// Pops all routes until there is only one left
+  void popUntilRoot() {
+    Navigator.of(this).popUntil((route) => route.isFirst);
+  }
 }
 
 /// Route builder without animation

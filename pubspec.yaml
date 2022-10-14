@@ -1,6 +1,6 @@
 name: named_routes
 description: Add names to routes without a declarative design pattern
-version: 0.0.1
+version: 0.1.0
 repository: https://github.com/Tienisto/named_routes
 
 environment:

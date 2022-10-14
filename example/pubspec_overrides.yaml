@@ -1,0 +1,3 @@
+dependency_overrides:
+  named_routes:
+    path: ..
