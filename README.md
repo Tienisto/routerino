@@ -6,7 +6,11 @@ This opinionated package provides extension methods for `BuildContext` to push r
 
 ## Motivation
 
-I don't like to manually declare all routes and just push a widget and that's it!
+I don't like to manually declare all routes.
+
+I don't want to use `build_runner` to have type-safe routes.
+
+I just want to push a widget and that's it!
 
 The problems:
 
