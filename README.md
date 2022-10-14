@@ -1,5 +1,8 @@
 # named_routes
 
+[![pub package](https://img.shields.io/pub/v/named_routes.svg)](https://pub.dev/packages/named_routes)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This opinionated package provides extension methods for `BuildContext` to push routes.
 
 ...and automatically add a name to the route so you can track it in sentry!
