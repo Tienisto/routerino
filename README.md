@@ -4,17 +4,19 @@ This opinionated package provides extension methods for `BuildContext` to push r
 
 ...and automatically add a name to the route so you can track it in sentry!
 
-## Motivation
+## Overview
 
-I don't like to manually declare all routes.
+**NO** to declaration of all routes aka [go_router](https://pub.dev/packages/go_router)
 
-I don't want to use `build_runner` to have type-safe routes.
+**NO** to build_runner
 
-I want to be able to track routes in sentry: Every route has to have a name!
+**YES** to type-safety (we call widget constructors directly)
+
+**YES** to sentry integration (named routes)
 
 I just want to push a widget and that's it!
 
-The problems:
+The problems without this package:
 
 1) Pushing a new route requires lots of boilerplate.
 2) Adding a name to the route requires you to write things twice (redundancy).
@@ -29,11 +31,11 @@ Navigator.push<T>(
 );
 ```
 
-## Solution
+Now you only need to write:
 
-Let's keep it minimal: `context.push(() => MyWidget())`
-
-The name will be obtained by implicit generics.
+```dart
+context.push(() => LoginPage());
+```
 
 ## Usage
 
