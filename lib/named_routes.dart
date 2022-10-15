@@ -93,7 +93,8 @@ extension NamedRoutesExt on BuildContext {
   }
 }
 
-PageRoute<T> _getNoAnimationRoute<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
+PageRoute<T> _getNoAnimationRoute<T, W extends Widget>(
+    SimpleWidgetBuilder<W> builder) {
   return PageRouteBuilder(
     pageBuilder: (context, a1, a2) => builder(),
     settings: RouteSettings(name: W.toString()),
