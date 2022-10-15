@@ -16,6 +16,15 @@ extension NamedRoutesExt on BuildContext {
     );
   }
 
+  /// Pushes a new route (no animation)
+  Future<T?> pushNoAnimation<T, W extends Widget>(
+      SimpleWidgetBuilder<W> builder) {
+    return Navigator.push<T>(
+      this,
+      _getNoAnimationRoute(builder),
+    );
+  }
+
   /// Pushes a new route while removing all others
   Future<T?> pushRoot<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
     return Navigator.pushAndRemoveUntil(
@@ -33,10 +42,7 @@ extension NamedRoutesExt on BuildContext {
       SimpleWidgetBuilder<W> builder) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _NoAnimationRoute(
-        builder: (_) => builder(),
-        settings: RouteSettings(name: W.toString()),
-      ),
+      _getNoAnimationRoute(builder),
       (route) => false,
     );
   }
@@ -50,25 +56,20 @@ extension NamedRoutesExt on BuildContext {
   void popUntilRoot() {
     Navigator.of(this).popUntil((route) => route.isFirst);
   }
+
+  /// Pops all routes until the specified page
+  ///
+  /// Usage:
+  /// context.popUntilPage<LoginPage>();
+  void popUntilPage<W extends Widget>() {
+    Navigator.of(this).popUntil((route) => route.settings.name == W.toString());
+  }
 }
 
-/// Route builder without animation
-class _NoAnimationRoute<T> extends MaterialPageRoute<T> {
-  _NoAnimationRoute({
-    required WidgetBuilder builder,
-    RouteSettings? settings,
-    bool maintainState = true,
-    bool fullscreenDialog = false,
-  }) : super(
-          builder: builder,
-          maintainState: maintainState,
-          settings: settings,
-          fullscreenDialog: fullscreenDialog,
-        );
-
-  @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
-    return child;
-  }
+PageRoute<T> _getNoAnimationRoute<T>(SimpleWidgetBuilder builder) {
+  return PageRouteBuilder(
+    pageBuilder: (context, a1, a2) => builder(),
+    transitionDuration: Duration.zero,
+    reverseTransitionDuration: Duration.zero,
+  );
 }
