@@ -17,7 +17,7 @@ extension NamedRoutesExt on BuildContext {
   }
 
   /// Pushes a new route (no animation)
-  Future<T?> pushNoAnimation<T, W extends Widget>(
+  Future<T?> pushImmediately<T, W extends Widget>(
       SimpleWidgetBuilder<W> builder) {
     return Navigator.push<T>(
       this,
@@ -38,7 +38,7 @@ extension NamedRoutesExt on BuildContext {
   }
 
   /// Pushes a new route while removing all others (no animation)
-  Future<T?> pushRootNoAnimation<T, W extends Widget>(
+  Future<T?> pushRootImmediately<T, W extends Widget>(
       SimpleWidgetBuilder<W> builder) {
     return Navigator.pushAndRemoveUntil(
       this,
@@ -47,14 +47,41 @@ extension NamedRoutesExt on BuildContext {
     );
   }
 
+  /// Pushes a new route and removes until predicate
+  Future<T?> pushAndRemoveUntil<T, W extends Widget>({
+    required RoutePredicate removeUntil,
+    required SimpleWidgetBuilder<W> builder,
+  }) {
+    return Navigator.pushAndRemoveUntil(
+      this,
+      MaterialPageRoute(
+        builder: (_) => builder(),
+        settings: RouteSettings(name: W.toString()),
+      ),
+      removeUntil,
+    );
+  }
+
+  /// Pushes a new route and removes until predicate (no animation)
+  Future<T?> pushAndRemoveUntilImmediately<T, W extends Widget>({
+    required RoutePredicate removeUntil,
+    required SimpleWidgetBuilder<W> builder,
+  }) {
+    return Navigator.pushAndRemoveUntil(
+      this,
+      _getNoAnimationRoute(builder),
+      removeUntil,
+    );
+  }
+
   /// Pops the most recent route
   void pop<T>([T? result]) {
-    Navigator.of(this).pop(result);
+    Navigator.pop(this, result);
   }
 
   /// Pops all routes until there is only one left
   void popUntilRoot() {
-    Navigator.of(this).popUntil((route) => route.isFirst);
+    Navigator.popUntil(this, (route) => route.isFirst);
   }
 
   /// Pops all routes until the specified page
@@ -62,13 +89,14 @@ extension NamedRoutesExt on BuildContext {
   /// Usage:
   /// context.popUntilPage<LoginPage>();
   void popUntilPage<W extends Widget>() {
-    Navigator.of(this).popUntil((route) => route.settings.name == W.toString());
+    Navigator.popUntil(this, (route) => route.settings.name == W.toString());
   }
 }
 
-PageRoute<T> _getNoAnimationRoute<T>(SimpleWidgetBuilder builder) {
+PageRoute<T> _getNoAnimationRoute<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
   return PageRouteBuilder(
     pageBuilder: (context, a1, a2) => builder(),
+    settings: RouteSettings(name: W.toString()),
     transitionDuration: Duration.zero,
     reverseTransitionDuration: Duration.zero,
   );

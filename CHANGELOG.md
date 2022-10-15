@@ -1,3 +1,8 @@
+## 0.3.0
+
+- **BREAKING**: pushNoAnimation and pushRootNoAnimation renamed to pushImmediately, pushRootImmediately
+- feat: add pushAndRemoveUntil, pushAndRemoveUntilImmediately
+
 ## 0.2.0
 
 - feat: add pushNoAnimation

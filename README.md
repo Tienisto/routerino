@@ -3,13 +3,15 @@
 [![pub package](https://img.shields.io/pub/v/named_routes.svg)](https://pub.dev/packages/named_routes)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This opinionated package provides extension methods for `BuildContext` to push routes.
+Add names to routes without a declarative pattern and without build_runner!
 
-...and automatically add a name to the route so you can track it in sentry!
+This **opinionated** package provides extension methods for `BuildContext` to push and pop routes.
 
-## Overview
+Route names are very useful for sentry tracking.
 
-**NO** to declaration of all routes aka [go_router](https://pub.dev/packages/go_router)
+## Philosophy
+
+**NO** to declaration of all routes like in [go_router](https://pub.dev/packages/go_router)
 
 **NO** to build_runner
 
@@ -19,13 +21,15 @@ This opinionated package provides extension methods for `BuildContext` to push r
 
 I just want to push a widget and that's it!
 
-The problems without this package:
+## Motivation
+
+The problems without using this package:
 
 1) Pushing a new route requires lots of boilerplate.
-2) Adding a name to the route requires you to write things twice (redundancy).
+2) Adding a name to the route requires you to write names twice (redundancy).
 
 ```dart
-Navigator.push<T>(
+Navigator.push(
   context,
   MaterialPageRoute(
     builder: (_) => LoginPage(),
@@ -46,14 +50,20 @@ context.push(() => LoginPage());
 // push a new route
 context.push(() => MyPage());
 
+// push a new route (no animation)
+context.pushImmediately(() => MyPage());
+
 // push a route while removing all others
 context.pushRoot(() => MyPage());
 
 // push a route while removing all others (without animation)
-context.pushRootNoAnimation(() => MyPage());
+context.pushRootImmediately(() => MyPage());
 
 // pop the most recent route
 context.pop();
+
+// pop until the specified page
+context.popUntilPage<LoginPage>();
 ```
 
 ## Sentry
