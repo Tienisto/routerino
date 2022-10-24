@@ -1,6 +1,6 @@
 ## 0.4.0
 
-- feat: add pushBottomSheet and pushBottomSheetStyled
+- feat: add pushBottomSheet
 
 ## 0.3.0
 
