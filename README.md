@@ -7,7 +7,7 @@ Add names to routes without a declarative pattern and without build_runner!
 
 This **opinionated** package provides extension methods for `BuildContext` to push and pop routes.
 
-Route names are very useful for sentry tracking.
+Route names are especially useful for sentry.
 
 ## Philosophy
 
@@ -47,10 +47,10 @@ context.push(() => LoginPage());
 ## Usage
 
 ```dart
-// push a new route
+// push a route
 context.push(() => MyPage());
 
-// push a new route (no animation)
+// push a route (no animation)
 context.pushImmediately(() => MyPage());
 
 // push a route while removing all others
@@ -58,6 +58,9 @@ context.pushRoot(() => MyPage());
 
 // push a route while removing all others (without animation)
 context.pushRootImmediately(() => MyPage());
+
+// push a bottom sheet
+context.pushBottomSheet(() => MySheet());
 
 // pop the most recent route
 context.pop();
