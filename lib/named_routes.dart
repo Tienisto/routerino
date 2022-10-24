@@ -122,7 +122,9 @@ class NamedRoutesBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: Container(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom), // handle safe area
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).padding.bottom, // handle safe area
+        ),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: const BorderRadius.only(
@@ -137,19 +139,29 @@ class NamedRoutesBottomSheet extends StatelessWidget {
               Center(
                 child: Text(
                   title,
-                  style: TextStyle(fontSize: 24, color: textColor, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
-              if (description != null)
-                ...[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    child: Center(
-                      child: Text(description!, style: TextStyle(fontSize: 16, color: textColor), textAlign: TextAlign.center),
+              if (description != null) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 20,
+                  ),
+                  child: Center(
+                    child: Text(
+                      description!,
+                      style: TextStyle(fontSize: 16, color: textColor),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ],
+                ),
+              ],
               child,
             ],
           ),
