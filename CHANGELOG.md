@@ -1,3 +1,7 @@
+## 0.4.0
+
+- feat: add pushBottomSheet and pushBottomSheetStyled
+
 ## 0.3.0
 
 - **BREAKING**: pushNoAnimation and pushRootNoAnimation renamed to pushImmediately, pushRootImmediately

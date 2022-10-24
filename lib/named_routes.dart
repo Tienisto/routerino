@@ -5,39 +5,34 @@ import 'package:flutter/material.dart';
 typedef SimpleWidgetBuilder<W extends Widget> = W Function();
 
 extension NamedRoutesExt on BuildContext {
-  /// Pushes a new route
+  /// Pushes a new route.
   Future<T?> push<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
     return Navigator.push<T>(
       this,
-      MaterialPageRoute(
-        builder: (_) => builder(),
-        settings: RouteSettings(name: W.toString()),
-      ),
+      _getMaterialRoute(builder),
     );
   }
 
-  /// Pushes a new route (no animation)
+  /// Pushes a new route (no animation).
   Future<T?> pushImmediately<T, W extends Widget>(
-      SimpleWidgetBuilder<W> builder) {
+    SimpleWidgetBuilder<W> builder,
+  ) {
     return Navigator.push<T>(
       this,
       _getNoAnimationRoute(builder),
     );
   }
 
-  /// Pushes a new route while removing all others
+  /// Pushes a new route while removing all others.
   Future<T?> pushRoot<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
     return Navigator.pushAndRemoveUntil(
       this,
-      MaterialPageRoute(
-        builder: (_) => builder(),
-        settings: RouteSettings(name: W.toString()),
-      ),
+      _getMaterialRoute(builder),
       (route) => false,
     );
   }
 
-  /// Pushes a new route while removing all others (no animation)
+  /// Pushes a new route while removing all others (no animation).
   Future<T?> pushRootImmediately<T, W extends Widget>(
       SimpleWidgetBuilder<W> builder) {
     return Navigator.pushAndRemoveUntil(
@@ -47,22 +42,19 @@ extension NamedRoutesExt on BuildContext {
     );
   }
 
-  /// Pushes a new route and removes until predicate
+  /// Pushes a new route and removes until predicate.
   Future<T?> pushAndRemoveUntil<T, W extends Widget>({
     required RoutePredicate removeUntil,
     required SimpleWidgetBuilder<W> builder,
   }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      MaterialPageRoute(
-        builder: (_) => builder(),
-        settings: RouteSettings(name: W.toString()),
-      ),
+      _getMaterialRoute(builder),
       removeUntil,
     );
   }
 
-  /// Pushes a new route and removes until predicate (no animation)
+  /// Pushes a new route and removes until predicate (no animation).
   Future<T?> pushAndRemoveUntilImmediately<T, W extends Widget>({
     required RoutePredicate removeUntil,
     required SimpleWidgetBuilder<W> builder,
@@ -74,17 +66,30 @@ extension NamedRoutesExt on BuildContext {
     );
   }
 
-  /// Pops the most recent route
+  /// Pushes a widget sliding from the bottom.
+  /// You can use [NamedRoutesBottomSheet] to quickly bootstrap a widget.
+  Future<T?> pushBottomSheet<T, W extends Widget>(
+    SimpleWidgetBuilder<W> builder,
+  ) {
+    return showModalBottomSheet<T>(
+      context: this,
+      backgroundColor: Colors.transparent,
+      routeSettings: RouteSettings(name: W.toString()),
+      builder: (context) => builder(),
+    );
+  }
+
+  /// Pops the most recent route.
   void pop<T>([T? result]) {
     Navigator.pop(this, result);
   }
 
-  /// Pops all routes until there is only one left
+  /// Pops all routes until there is only one left.
   void popUntilRoot() {
     Navigator.popUntil(this, (route) => route.isFirst);
   }
 
-  /// Pops all routes until the specified page
+  /// Pops all routes until the specified page.
   ///
   /// Usage:
   /// context.popUntilPage<LoginPage>();
@@ -93,8 +98,79 @@ extension NamedRoutesExt on BuildContext {
   }
 }
 
+/// A bottom sheet widget.
+/// It is recommended to extend this widget.
+class NamedRoutesBottomSheet extends StatelessWidget {
+  final String title;
+  final Color? textColor;
+  final String? description;
+  final Color backgroundColor;
+  final EdgeInsets padding;
+  final Widget child;
+
+  const NamedRoutesBottomSheet({
+    required this.title,
+    this.textColor,
+    this.description,
+    required this.backgroundColor,
+    this.padding = const EdgeInsets.all(20),
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Container(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom), // handle safe area
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Padding(
+          padding: padding,
+          child: Column(
+            children: [
+              Center(
+                child: Text(
+                  title,
+                  style: TextStyle(fontSize: 24, color: textColor, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              if (description != null)
+                ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    child: Center(
+                      child: Text(description!, style: TextStyle(fontSize: 16, color: textColor), textAlign: TextAlign.center),
+                    ),
+                  ),
+                ],
+              child,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+PageRoute<T> _getMaterialRoute<T, W extends Widget>(
+  SimpleWidgetBuilder<W> builder,
+) {
+  return MaterialPageRoute(
+    builder: (_) => builder(),
+    settings: RouteSettings(name: W.toString()),
+  );
+}
+
 PageRoute<T> _getNoAnimationRoute<T, W extends Widget>(
-    SimpleWidgetBuilder<W> builder) {
+  SimpleWidgetBuilder<W> builder,
+) {
   return PageRouteBuilder(
     pageBuilder: (context, a1, a2) => builder(),
     settings: RouteSettings(name: W.toString()),
