@@ -59,6 +59,12 @@ context.pushRoot(() => MyPage());
 // push a route while removing all others (without animation)
 context.pushRootImmediately(() => MyPage());
 
+// push a route and removes all routes until the specified one
+context.pushAndRemoveUntil(
+  removeUntil: LoginPage,
+  builder: () => MyPage(),
+);
+
 // push a bottom sheet
 context.pushBottomSheet(() => MySheet());
 

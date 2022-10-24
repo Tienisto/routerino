@@ -42,8 +42,32 @@ extension NamedRoutesExt on BuildContext {
     );
   }
 
-  /// Pushes a new route and removes until predicate.
+  /// Pushes a new route and removes until the specified type.
   Future<T?> pushAndRemoveUntil<T, W extends Widget>({
+    required Type removeUntil,
+    required SimpleWidgetBuilder<W> builder,
+  }) {
+    return Navigator.pushAndRemoveUntil(
+      this,
+      _getMaterialRoute(builder),
+      (route) => route.settings.name == removeUntil.toString(),
+    );
+  }
+
+  /// Pushes a new route and removes until the specified type.
+  Future<T?> pushAndRemoveUntilImmediately<T, W extends Widget>({
+    required T removeUntilPage,
+    required SimpleWidgetBuilder<W> builder,
+  }) {
+    return Navigator.pushAndRemoveUntil(
+      this,
+      _getNoAnimationRoute(builder),
+      (route) => route.settings.name == removeUntilPage.toString(),
+    );
+  }
+
+  /// Pushes a new route and removes until predicate.
+  Future<T?> pushAndRemoveUntilPredicate<T, W extends Widget>({
     required RoutePredicate removeUntil,
     required SimpleWidgetBuilder<W> builder,
   }) {
@@ -55,7 +79,7 @@ extension NamedRoutesExt on BuildContext {
   }
 
   /// Pushes a new route and removes until predicate (no animation).
-  Future<T?> pushAndRemoveUntilImmediately<T, W extends Widget>({
+  Future<T?> pushAndRemoveUntilPredicateImmediately<T, W extends Widget>({
     required RoutePredicate removeUntil,
     required SimpleWidgetBuilder<W> builder,
   }) {

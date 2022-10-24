@@ -1,3 +1,8 @@
+## 0.5.0
+
+- **BREAKING**: pushAndRemoveUntil renamed to pushAndRemoveUntilPredicate
+- feat: add pushAndRemoveUntil, pushAndRemoveUntilImmediately
+
 ## 0.4.0
 
 - feat: add pushBottomSheet
