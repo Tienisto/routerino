@@ -1,3 +1,7 @@
+## 0.5.1
+
+- fix: support inkwell inside NamedRoutesBottomSheet
+
 ## 0.5.0
 
 - **BREAKING**: pushAndRemoveUntil renamed to pushAndRemoveUntilPredicate

@@ -186,7 +186,11 @@ class NamedRoutesBottomSheet extends StatelessWidget {
                   ),
                 ),
               ],
-              child,
+              Material(
+                // we need this, otherwise inkwells inside child do not work properly
+                type: MaterialType.transparency,
+                child: child,
+              ),
             ],
           ),
         ),
