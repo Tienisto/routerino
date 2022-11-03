@@ -1,3 +1,7 @@
+## 0.6.0
+
+- feat: add maxWidth to `NamedRoutesBottomSheet`
+
 ## 0.5.1
 
 - fix: support inkwell inside NamedRoutesBottomSheet
