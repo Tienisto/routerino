@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 /// The widget should use the implicit context declared in a separate widget.
 typedef SimpleWidgetBuilder<W extends Widget> = W Function();
 
+typedef SimpleWidgetPopsWithResultBuilder<T, W extends PopsWithResult<T>> = W Function();
+mixin PopsWithResult<T> on Widget {
+  void popWithResult(BuildContext context, T result) {
+    context.pop(result);
+  }
+}
+
 extension NamedRoutesExt on BuildContext {
   /// Pushes a new route.
   Future<T?> push<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
@@ -17,6 +24,15 @@ extension NamedRoutesExt on BuildContext {
   Future<T?> pushImmediately<T, W extends Widget>(
     SimpleWidgetBuilder<W> builder,
   ) {
+    return Navigator.push<T>(
+      this,
+      _getNoAnimationRoute(builder),
+    );
+  }
+
+  Future<T?> pushWithResult<T, W extends PopsWithResult<T>>(
+      SimpleWidgetPopsWithResultBuilder<T, W> builder,
+      ) {
     return Navigator.push<T>(
       this,
       _getNoAnimationRoute(builder),
