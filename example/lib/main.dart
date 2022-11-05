@@ -68,7 +68,14 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  int? number;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +84,19 @@ class RegisterPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const Text('Register Page'),
+            Text('Number: $number'),
+            ElevatedButton(
+              onPressed: () async {
+                final int? result = await context.pushTypedResult(() => NumberPickerPage(), onWrongType: (result) {
+                  print('Wrong type: $result');
+                  return null;
+                });
+                if (result != null) {
+                  setState(() => number = result);
+                }
+              },
+              child: Text('Pick Number'),
+            ),
             ElevatedButton(
               onPressed: () {
                 context.popUntilRoot();
@@ -89,3 +109,33 @@ class RegisterPage extends StatelessWidget {
     );
   }
 }
+
+class NumberPickerPage extends StatelessWidget with PopsWithResult<int> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Text('NumberPicker'),
+            for (final i in [1, 2, 3])
+              ElevatedButton(
+                onPressed: () {
+                  popWithResult(context, i);
+                },
+                child: Text(i.toString()),
+              ),
+            ElevatedButton(
+              onPressed: () {
+                context.pop('A');
+              },
+              child: Text('A'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

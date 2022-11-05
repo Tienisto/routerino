@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 /// The widget should use the implicit context declared in a separate widget.
 typedef SimpleWidgetBuilder<W extends Widget> = W Function();
 
-typedef SimpleWidgetPopsWithResultBuilder<T, W extends PopsWithResult<T>> = W Function();
+typedef SimpleWidgetPopsWithResultBuilder<T, W extends PopsWithResult<T>> = W
+    Function();
 mixin PopsWithResult<T> on Widget {
-  void popWithResult(BuildContext context, T result) {
+  void popWithResult(BuildContext context, T? result) {
     context.pop(result);
   }
 }
@@ -30,13 +31,33 @@ extension NamedRoutesExt on BuildContext {
     );
   }
 
-  Future<T?> pushWithResult<T, W extends PopsWithResult<T>>(
-      SimpleWidgetPopsWithResultBuilder<T, W> builder,
-      ) {
-    return Navigator.push<T>(
+  /// Pushes a new route and returns the result of type [T].
+  /// [T] is inferred by the pushed widget which needs to specify the type in the [PopsWithResult] mixin.
+  /// If somehow the result is not of type [T], then null will be returned.
+  /// This behaviour can be overridden or listened to by specifying [onWrongType].
+  ///
+  /// class NumberPickerPage extends StatelessWidget with PopsWithResult<int> {
+  /// ...
+  /// }
+  ///
+  /// final int? result = await context.pushTypedResult(() => NumberPickerPage(), onWrongType: (result) {
+  ///   print('Wrong type: $result');
+  ///   return null;
+  /// });
+  Future<T?> pushTypedResult<T, W extends PopsWithResult<T>>(
+    SimpleWidgetPopsWithResultBuilder<T, W> builder, {
+    T? Function(dynamic result)? onWrongType,
+  }) async {
+    final Object? result = await Navigator.push(
       this,
-      _getNoAnimationRoute(builder),
+      _getMaterialRoute(builder),
     );
+
+    if (result is T?) {
+      return result; // got expected result type
+    } else {
+      return onWrongType?.call(result); // type does not match
+    }
   }
 
   /// Pushes a new route while removing all others.
