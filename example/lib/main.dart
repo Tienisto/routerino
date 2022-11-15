@@ -30,6 +30,22 @@ class HomePage extends StatelessWidget {
               },
               child: Text('Login'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                context.pushBottomSheet(() => NamedRoutesBottomSheet(
+                      title: 'My Title',
+                      backgroundColor: Colors.green,
+                      child: Column(
+                        children: [
+                          Text('Hello World 1'),
+                          Text('Hello World 2'),
+                          Text('Hello World 3'),
+                        ],
+                      ),
+                    ));
+              },
+              child: Text('Open Bottom Sheet'),
+            ),
           ],
         ),
       ),

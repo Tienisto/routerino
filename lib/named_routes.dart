@@ -130,6 +130,7 @@ class NamedRoutesBottomSheet extends StatelessWidget {
   final String? description;
   final Color backgroundColor;
   final EdgeInsets padding;
+  final double borderRadius;
   final double maxWidth;
   final Widget child;
 
@@ -139,6 +140,7 @@ class NamedRoutesBottomSheet extends StatelessWidget {
     this.description,
     required this.backgroundColor,
     this.padding = const EdgeInsets.all(20),
+    this.borderRadius = 10,
     this.maxWidth = 550,
     required this.child,
     Key? key,
@@ -146,60 +148,56 @@ class NamedRoutesBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: maxWidth),
-        child: IntrinsicHeight(
-          child: Container(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).padding.bottom, // handle safe area
-            ),
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      child: Container(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).padding.bottom, // handle safe area
+        ),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(borderRadius),
+            topRight: Radius.circular(borderRadius),
+          ),
+        ),
+        child: Padding(
+          padding: padding,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Center(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: padding,
-              child: Column(
-                children: [
-                  Center(
+              if (description != null) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 20,
+                  ),
+                  child: Center(
                     child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      description!,
+                      style: TextStyle(fontSize: 16, color: textColor),
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  if (description != null) ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 20,
-                      ),
-                      child: Center(
-                        child: Text(
-                          description!,
-                          style: TextStyle(fontSize: 16, color: textColor),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ],
-                  Material(
-                    // we need this, otherwise inkwells inside child do not work properly
-                    type: MaterialType.transparency,
-                    child: child,
-                  ),
-                ],
+                ),
+              ],
+              Material(
+                // we need this, otherwise inkwells inside child do not work properly
+                type: MaterialType.transparency,
+                child: child,
               ),
-            ),
+            ],
           ),
         ),
       ),

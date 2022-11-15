@@ -1,3 +1,7 @@
+## 0.7.0
+
+- feat: remove `IntrinsicHeight` from `NamedRoutesBottomSheet`
+
 ## 0.6.0
 
 - feat: add maxWidth to `NamedRoutesBottomSheet`
