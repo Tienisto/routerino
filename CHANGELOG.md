@@ -1,3 +1,7 @@
+## 0.8.0
+
+- feat: center bottom sheet horizontally
+
 ## 0.7.0
 
 - feat: remove `IntrinsicHeight` from `NamedRoutesBottomSheet`
