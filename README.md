@@ -11,7 +11,7 @@ Route names are especially useful for sentry.
 
 ## Philosophy
 
-**NO** to declaration of all routes like in [go_router](https://pub.dev/packages/go_router)
+**NO** to a declarative pattern like in [go_router](https://pub.dev/packages/go_router)
 
 **NO** to build_runner
 
@@ -75,6 +75,24 @@ context.pop();
 context.popUntilPage<LoginPage>();
 ```
 
+## Global BuildContext
+
+Sometimes you want to push a route while you don't have access to `BuildContext`. There is a pragmatic way to solve this problem.
+
+Setup:
+```dart
+MaterialApp(
+  title: 'Flutter Example',
+  navigatorKey: Routerino.navigatorKey, // <-- add this
+  home: HomePage(),
+);
+```
+
+Access global context:
+```dart
+Routerino.context.push(() => MyPage());
+```
+
 ## Sentry
 
 You want it to look like this?
@@ -92,7 +110,7 @@ MaterialApp(
 
 ## Obfuscation
 
-It does not work if you obfuscate the classes.
+Routes do not have the correct class name if you obfuscate the classes.
 
 It is up to you. I don't value obfuscation that much.
 

@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Example',
+      navigatorKey: Routerino.navigatorKey,
       home: HomePage(),
     );
   }
