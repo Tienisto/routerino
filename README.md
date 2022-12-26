@@ -1,6 +1,6 @@
-# named_routes
+# Routerino
 
-[![pub package](https://img.shields.io/pub/v/named_routes.svg)](https://pub.dev/packages/named_routes)
+[![pub package](https://img.shields.io/pub/v/routerino.svg)](https://pub.dev/packages/routerino)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Add names to routes without a declarative pattern and without build_runner!
@@ -79,7 +79,7 @@ context.popUntilPage<LoginPage>();
 
 You want it to look like this?
 
-![sentry](https://raw.githubusercontent.com/Tienisto/named_routes/main/resources/sentry.png)
+![sentry](https://raw.githubusercontent.com/Tienisto/routerino/main/resources/sentry.png)
 
 ```dart
 MaterialApp(

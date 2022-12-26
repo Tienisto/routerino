@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:named_routes/named_routes.dart';
+import 'package:routerino/routerino.dart';
 
 void main() {
   runApp(MyApp());

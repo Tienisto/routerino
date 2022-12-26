@@ -1,7 +1,7 @@
-name: named_routes
+name: routerino
 description: Add names to routes without a declarative pattern and without build_runner
-version: 0.8.0
-repository: https://github.com/Tienisto/named_routes
+version: 0.1.0
+repository: https://github.com/Tienisto/routerino
 
 environment:
   sdk: '>=2.17.0 <3.0.0'

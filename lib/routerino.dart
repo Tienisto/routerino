@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 /// The widget should use the implicit context declared in a separate widget.
 typedef SimpleWidgetBuilder<W extends Widget> = W Function();
 
+/// Utility class to provide global access to [BuildContext].
+class Routerino {
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static BuildContext get context => navigatorKey.currentContext!;
+}
+
 extension NamedRoutesExt on BuildContext {
   /// Pushes a new route.
   Future<T?> push<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {

@@ -32,7 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  named_routes: 0.0.1
+  routerino: 0.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
