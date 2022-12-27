@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                context.pushBottomSheet(() => NamedRoutesBottomSheet(
+                context.pushBottomSheet(() => RouterinoBottomSheet(
                       title: 'My Title',
                       backgroundColor: Colors.green,
                       child: Column(

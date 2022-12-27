@@ -10,12 +10,12 @@ class Routerino {
   static BuildContext get context => navigatorKey.currentContext!;
 }
 
-extension NamedRoutesExt on BuildContext {
+extension RouterinoExt on BuildContext {
   /// Pushes a new route.
   Future<T?> push<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
     return Navigator.push<T>(
       this,
-      _getMaterialRoute(builder),
+      _getMaterialRoute<T, W>(builder),
     );
   }
 
@@ -25,7 +25,7 @@ extension NamedRoutesExt on BuildContext {
   ) {
     return Navigator.push<T>(
       this,
-      _getNoAnimationRoute(builder),
+      _getNoAnimationRoute<T, W>(builder),
     );
   }
 
@@ -33,7 +33,7 @@ extension NamedRoutesExt on BuildContext {
   Future<T?> pushRoot<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getMaterialRoute(builder),
+      _getMaterialRoute<T, W>(builder),
       (route) => false,
     );
   }
@@ -43,7 +43,7 @@ extension NamedRoutesExt on BuildContext {
       SimpleWidgetBuilder<W> builder) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getNoAnimationRoute(builder),
+      _getNoAnimationRoute<T, W>(builder),
       (route) => false,
     );
   }
@@ -55,20 +55,20 @@ extension NamedRoutesExt on BuildContext {
   }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getMaterialRoute(builder),
+      _getMaterialRoute<T, W>(builder),
       (route) => route.settings.name == removeUntil.toString(),
     );
   }
 
   /// Pushes a new route and removes until the specified type.
   Future<T?> pushAndRemoveUntilImmediately<T, W extends Widget>({
-    required T removeUntilPage,
+    required Type removeUntil,
     required SimpleWidgetBuilder<W> builder,
   }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getNoAnimationRoute(builder),
-      (route) => route.settings.name == removeUntilPage.toString(),
+      _getNoAnimationRoute<T, W>(builder),
+      (route) => route.settings.name == removeUntil.toString(),
     );
   }
 
@@ -79,7 +79,7 @@ extension NamedRoutesExt on BuildContext {
   }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getMaterialRoute(builder),
+      _getMaterialRoute<T, W>(builder),
       removeUntil,
     );
   }
@@ -91,13 +91,13 @@ extension NamedRoutesExt on BuildContext {
   }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getNoAnimationRoute(builder),
+      _getNoAnimationRoute<T, W>(builder),
       removeUntil,
     );
   }
 
   /// Pushes a widget sliding from the bottom.
-  /// You can use [NamedRoutesBottomSheet] to quickly bootstrap a widget.
+  /// You can use [RouterinoBottomSheet] to quickly bootstrap a widget.
   Future<T?> pushBottomSheet<T, W extends Widget>(
     SimpleWidgetBuilder<W> builder,
   ) {
@@ -122,15 +122,15 @@ extension NamedRoutesExt on BuildContext {
   /// Pops all routes until the specified page.
   ///
   /// Usage:
-  /// context.popUntilPage<LoginPage>();
-  void popUntilPage<W extends Widget>() {
-    Navigator.popUntil(this, (route) => route.settings.name == W.toString());
+  /// context.popUntil(LoginPage);
+  void popUntil(Type pageType) {
+    Navigator.popUntil(this, (route) => route.settings.name == pageType.toString());
   }
 }
 
 /// A bottom sheet widget.
 /// It is recommended to extend this widget.
-class NamedRoutesBottomSheet extends StatelessWidget {
+class RouterinoBottomSheet extends StatelessWidget {
   final String title;
   final Color? textColor;
   final String? description;
@@ -140,7 +140,7 @@ class NamedRoutesBottomSheet extends StatelessWidget {
   final double maxWidth;
   final Widget child;
 
-  const NamedRoutesBottomSheet({
+  const RouterinoBottomSheet({
     required this.title,
     this.textColor,
     this.description,

@@ -72,7 +72,7 @@ context.pushBottomSheet(() => MySheet());
 context.pop();
 
 // pop until the specified page
-context.popUntilPage<LoginPage>();
+context.popUntil(LoginPage);
 ```
 
 ## Global BuildContext
