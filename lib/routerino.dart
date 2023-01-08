@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:routerino/transitions.dart';
+
+export 'package:routerino/transitions.dart';
 
 /// Opinionated widget builder.
 /// The widget should use the implicit context declared in a separate widget.
@@ -7,15 +10,23 @@ typedef SimpleWidgetBuilder<W extends Widget> = W Function();
 /// Utility class to provide global access to [BuildContext].
 class Routerino {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   static BuildContext get context => navigatorKey.currentContext!;
+
+  /// Set the transition globally
+  ///
+  /// Example:
+  /// Routerino.transition = RouterinoTransition.fade;
+  static RouterinoTransition transition = RouterinoTransition.material;
 }
 
 extension RouterinoExt on BuildContext {
   /// Pushes a new route.
-  Future<T?> push<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
+  Future<T?> push<T, W extends Widget>(SimpleWidgetBuilder<W> builder,
+      {RouterinoTransition? transition}) {
     return Navigator.push<T>(
       this,
-      _getMaterialRoute<T, W>(builder),
+      (transition ?? Routerino.transition).getRoute<T, W>(builder),
     );
   }
 
@@ -25,25 +36,29 @@ extension RouterinoExt on BuildContext {
   ) {
     return Navigator.push<T>(
       this,
-      _getNoAnimationRoute<T, W>(builder),
+      RouterinoTransition.noTransition.getRoute<T, W>(builder),
     );
   }
 
   /// Pushes a new route while removing all others.
-  Future<T?> pushRoot<T, W extends Widget>(SimpleWidgetBuilder<W> builder) {
+  Future<T?> pushRoot<T, W extends Widget>(
+    SimpleWidgetBuilder<W> builder, {
+    RouterinoTransition? transition,
+  }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getMaterialRoute<T, W>(builder),
+      (transition ?? Routerino.transition).getRoute<T, W>(builder),
       (route) => false,
     );
   }
 
   /// Pushes a new route while removing all others (no animation).
   Future<T?> pushRootImmediately<T, W extends Widget>(
-      SimpleWidgetBuilder<W> builder) {
+    SimpleWidgetBuilder<W> builder,
+  ) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getNoAnimationRoute<T, W>(builder),
+      RouterinoTransition.noTransition.getRoute<T, W>(builder),
       (route) => false,
     );
   }
@@ -52,10 +67,11 @@ extension RouterinoExt on BuildContext {
   Future<T?> pushAndRemoveUntil<T, W extends Widget>({
     required Type removeUntil,
     required SimpleWidgetBuilder<W> builder,
+    RouterinoTransition? transition,
   }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getMaterialRoute<T, W>(builder),
+      (transition ?? Routerino.transition).getRoute<T, W>(builder),
       (route) => route.settings.name == removeUntil.toString(),
     );
   }
@@ -67,7 +83,7 @@ extension RouterinoExt on BuildContext {
   }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getNoAnimationRoute<T, W>(builder),
+      RouterinoTransition.noTransition.getRoute<T, W>(builder),
       (route) => route.settings.name == removeUntil.toString(),
     );
   }
@@ -76,10 +92,11 @@ extension RouterinoExt on BuildContext {
   Future<T?> pushAndRemoveUntilPredicate<T, W extends Widget>({
     required RoutePredicate removeUntil,
     required SimpleWidgetBuilder<W> builder,
+    RouterinoTransition? transition,
   }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getMaterialRoute<T, W>(builder),
+      (transition ?? Routerino.transition).getRoute<T, W>(builder),
       removeUntil,
     );
   }
@@ -91,7 +108,7 @@ extension RouterinoExt on BuildContext {
   }) {
     return Navigator.pushAndRemoveUntil(
       this,
-      _getNoAnimationRoute<T, W>(builder),
+      RouterinoTransition.noTransition.getRoute<T, W>(builder),
       removeUntil,
     );
   }
@@ -124,7 +141,8 @@ extension RouterinoExt on BuildContext {
   /// Usage:
   /// context.popUntil(LoginPage);
   void popUntil(Type pageType) {
-    Navigator.popUntil(this, (route) => route.settings.name == pageType.toString());
+    Navigator.popUntil(
+        this, (route) => route.settings.name == pageType.toString(),);
   }
 }
 
@@ -217,24 +235,4 @@ class RouterinoBottomSheet extends StatelessWidget {
       ],
     );
   }
-}
-
-PageRoute<T> _getMaterialRoute<T, W extends Widget>(
-  SimpleWidgetBuilder<W> builder,
-) {
-  return MaterialPageRoute(
-    builder: (_) => builder(),
-    settings: RouteSettings(name: W.toString()),
-  );
-}
-
-PageRoute<T> _getNoAnimationRoute<T, W extends Widget>(
-  SimpleWidgetBuilder<W> builder,
-) {
-  return PageRouteBuilder(
-    pageBuilder: (context, a1, a2) => builder(),
-    settings: RouteSettings(name: W.toString()),
-    transitionDuration: Duration.zero,
-    reverseTransitionDuration: Duration.zero,
-  );
 }

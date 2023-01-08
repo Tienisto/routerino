@@ -93,6 +93,23 @@ Access global context:
 Routerino.context.push(() => MyPage());
 ```
 
+## Transitions
+
+You can configure the transition globally or per invocation.
+
+```dart
+// Set globally
+Routerino.transition = RouterinoTransition.fade;
+
+// uses "fade" transition
+context.push(() => LoginPage());
+
+// uses "noTransition" transition
+context.push(() => RegisterPage(), transition: RouterinoTransition.noTransition);
+```
+
+Available transitions: `material (default)`, `cupertino`, `noTransition`, `fade`.
+
 ## Sentry
 
 You want it to look like this?

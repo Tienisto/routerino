@@ -73,7 +73,7 @@ class LoginPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  context.push(() => RegisterPage());
+                  context.push(() => RegisterPage(), transition: RouterinoTransition.fade);
                 },
                 child: Text('Register'),
               ),
