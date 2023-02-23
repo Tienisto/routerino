@@ -121,6 +121,7 @@ extension RouterinoExt on BuildContext {
     return showModalBottomSheet<T>(
       context: this,
       backgroundColor: Colors.transparent,
+      elevation: 0,
       routeSettings: RouteSettings(name: W.toString()),
       builder: (context) => builder(),
     );
@@ -142,7 +143,9 @@ extension RouterinoExt on BuildContext {
   /// context.popUntil(LoginPage);
   void popUntil(Type pageType) {
     Navigator.popUntil(
-        this, (route) => route.settings.name == pageType.toString(),);
+      this,
+      (route) => route.settings.name == pageType.toString(),
+    );
   }
 }
 

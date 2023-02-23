@@ -1,6 +1,6 @@
 name: routerino
 description: Add names to routes without a declarative pattern and without build_runner
-version: 0.3.0
+version: 0.3.1
 repository: https://github.com/Tienisto/routerino
 
 environment:

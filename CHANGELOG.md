@@ -1,3 +1,7 @@
+## 0.3.1
+
+- fix: set `elevation: 0` for `pushBottomSheet` to avoid shadows in Flutter 3.7
+
 ## 0.3.0
 
 - feat: add transitions API
