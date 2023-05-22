@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:routerino/transitions.dart';
 
+export 'package:routerino/routerino_home.dart';
 export 'package:routerino/transitions.dart';
 
 /// Opinionated widget builder.

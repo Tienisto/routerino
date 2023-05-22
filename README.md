@@ -75,6 +75,21 @@ context.pop();
 context.popUntil(LoginPage);
 ```
 
+## Initial Route
+
+It is recommended to add a `RouterinoHome` widget to your app.
+
+This prevents having an unnamed initial route which causes trouble if you want to use `popUntil`.
+
+```dart
+MaterialApp(
+  title: 'Flutter Example',
+  home: RouterinoHome( // <-- add this
+    builder: () => MyHomePage(),
+  ),
+);
+```
+
 ## Global BuildContext
 
 Sometimes you want to push a route while you don't have access to `BuildContext`. There is a pragmatic way to solve this problem.
@@ -84,7 +99,9 @@ Setup:
 MaterialApp(
   title: 'Flutter Example',
   navigatorKey: Routerino.navigatorKey, // <-- add this
-  home: HomePage(),
+  home: RouterinoHome(
+    builder: () => MyHomePage(),
+  ),
 );
 ```
 

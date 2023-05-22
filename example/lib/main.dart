@@ -11,7 +11,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Example',
       navigatorKey: Routerino.navigatorKey,
-      home: HomePage(),
+      home: RouterinoHome(
+        builder: () => HomePage(),
+      ),
     );
   }
 }
@@ -67,7 +69,7 @@ class LoginPage extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  context.popUntilRoot();
+                  context.popUntil(HomePage);
                 },
                 child: Text('Back to home page'),
               ),
