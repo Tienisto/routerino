@@ -3,23 +3,32 @@
 [![pub package](https://img.shields.io/pub/v/routerino.svg)](https://pub.dev/packages/routerino)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Add names to routes without a declarative pattern and without build_runner!
-
 This **opinionated** package provides extension methods for `BuildContext` to push and pop routes.
-
-Route names are especially useful for sentry.
 
 ## Philosophy
 
-**NO** to a declarative pattern like in [go_router](https://pub.dev/packages/go_router)
+➤ **NO** to a verbose declarative pattern like in [go_router](https://pub.dev/packages/go_router)
 
-**NO** to build_runner
+> Having all routes in one place is good but this information is already available if you write all routes in `views/` or `pages/`.
+> 
+> Furthermore, you often find yourself jumping between several files to either find the parameters
+> or to find the widget.
 
-**YES** to type-safety (we call widget constructors directly)
+➤ **NO** to build_runner
 
-**YES** to sentry integration (named routes)
+> This is necessary for type-safety but it slows down development. (errors after checkout is bad developer UX)
 
-I just want to push a widget and that's it!
+➤ **YES** to type-safety
+
+> We call widget constructors directly. No need to jump between several files.
+
+➤ **YES** to sentry integration
+
+> Every route will have a name based on its class name. This is useful for sentry.
+
+➤ **TLDR**
+
+> I just want to push a widget and that's it!
 
 ## Motivation
 
@@ -59,9 +68,6 @@ context.pushRoot(() => MyPage());
 // push a route while removing all others (without animation)
 context.pushRootImmediately(() => MyPage());
 
-// push a route and wait for a result (type-safe)
-final result = await context.pushWithResult<int, PickNumberPage>(() => PickNumberPage());
-
 // push a route and removes all routes until the specified one
 context.pushAndRemoveUntil(
   removeUntil: LoginPage,
@@ -76,6 +82,9 @@ context.pop();
 
 // pop until the specified page
 context.popUntil(LoginPage);
+
+// push a route and wait for a result (type-safe)
+final result = await context.pushWithResult<int, PickNumberPage>(() => PickNumberPage());
 ```
 
 ## Initial Route
@@ -91,6 +100,8 @@ MaterialApp(
     builder: () => MyHomePage(),
   ),
 );
+
+context.popUntil(MyHomePage); // <-- works now
 ```
 
 ## Global BuildContext
