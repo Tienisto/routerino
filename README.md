@@ -59,6 +59,9 @@ context.pushRoot(() => MyPage());
 // push a route while removing all others (without animation)
 context.pushRootImmediately(() => MyPage());
 
+// push a route and wait for a result (type-safe)
+final result = await context.pushWithResult<int, PickNumberPage>(() => PickNumberPage());
+
 // push a route and removes all routes until the specified one
 context.pushAndRemoveUntil(
   removeUntil: LoginPage,
@@ -126,6 +129,42 @@ context.push(() => RegisterPage(), transition: RouterinoTransition.noTransition)
 ```
 
 Available transitions: `material (default)`, `cupertino`, `noTransition`, `fade`.
+
+## Type-safe Results
+
+You can push a route and wait for a result while achieving a high degree of type-safety.
+
+You need to specify the exact generic type until https://github.com/dart-lang/language/issues/524 gets resolved.
+
+Push a route:
+
+```dart
+final result = await context.pushWithResult<int, PickNumberPage>(() => PickNumberPage());
+```
+
+Specify the widget:
+
+```dart
+// add PopsWithResult<int> for type-safety
+class PickNumberPage extends StatelessWidget with PopsWithResult<int> {
+  const PickNumberPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // use the type-safe popWithResult method
+            popWithResult(context, 123);
+          },
+          child: Text('Pick Number'),
+        ),
+      ),
+    );
+  }
+}
+```
 
 ## Sentry
 

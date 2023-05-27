@@ -8,6 +8,15 @@ export 'package:routerino/transitions.dart';
 /// The widget should use the implicit context declared in a separate widget.
 typedef SimpleWidgetBuilder<W extends Widget> = W Function();
 
+typedef SimpleWidgetPopsWithResultBuilder<T, W extends PopsWithResult<T>> = W
+    Function();
+
+mixin PopsWithResult<T> on Widget {
+  void popWithResult(BuildContext context, T? result) {
+    context.pop(result);
+  }
+}
+
 /// Utility class to provide global access to [BuildContext].
 class Routerino {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -62,6 +71,37 @@ extension RouterinoExt on BuildContext {
       RouterinoTransition.noTransition.getRoute<T, W>(builder),
       (route) => false,
     );
+  }
+
+  /// Pushes a new route expecting a typed result.
+  ///
+  /// For type-safety, you need to specify the exact generic type
+  /// until https://github.com/dart-lang/language/issues/524 gets resolved.
+  ///
+  /// The push invocation:
+  /// final result = await context.pushWithResult<int, PickNumberPage>(() => PickNumberPage());
+  ///
+  /// The widget:
+  /// class PickNumberPage extends StatelessWidget with PopsWithResult<int> {
+  /// // ...
+  /// popWithResult(context, 1);
+  /// // ...
+  /// }
+  Future<T?> pushWithResult<T, W extends PopsWithResult<T>>(
+    SimpleWidgetPopsWithResultBuilder<T, W> builder, {
+    T? Function(dynamic result)? onWrongType,
+    RouterinoTransition? transition,
+  }) async {
+    final Object? result = await Navigator.push<T>(
+      this,
+      (transition ?? Routerino.transition).getRoute<T, W>(() => builder()),
+    );
+
+    if (result is T?) {
+      return result; // got expected result type
+    } else {
+      return onWrongType?.call(result); // type does not match
+    }
   }
 
   /// Pushes a new route and removes until the specified type.

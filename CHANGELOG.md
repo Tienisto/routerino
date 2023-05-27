@@ -1,3 +1,7 @@
+## 0.5.0
+
+- feat: add `pushWithResult` and `PopsWithResult` to achieve type-safe results
+
 ## 0.4.0
 
 - feat: add `RouterinoHome` widget

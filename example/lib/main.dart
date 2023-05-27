@@ -34,6 +34,13 @@ class HomePage extends StatelessWidget {
               child: Text('Login'),
             ),
             ElevatedButton(
+              onPressed: () async {
+                final result = await context.pushWithResult<int, PickNumberPage>(() => PickNumberPage());
+                print('RESULT: $result (${result.runtimeType})');
+              },
+              child: Text('Pick a number'),
+            ),
+            ElevatedButton(
               onPressed: () {
                 context.pushBottomSheet(() => RouterinoBottomSheet(
                       title: 'My Title',
@@ -108,3 +115,30 @@ class RegisterPage extends StatelessWidget {
     );
   }
 }
+
+class PickNumberPage extends StatelessWidget with PopsWithResult<int> {
+  const PickNumberPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              popWithResult(context, 1);
+            },
+            child: Text('Pick 1'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              popWithResult(context, 2);
+            },
+            child: Text('Pick 2'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
