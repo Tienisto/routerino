@@ -139,7 +139,7 @@ context.push(() => LoginPage());
 context.push(() => RegisterPage(), transition: RouterinoTransition.noTransition);
 ```
 
-Available transitions: `material (default)`, `cupertino`, `noTransition`, `fade`.
+Available transitions: `material (default)`, `cupertino`, `noTransition`, `fade`, `slide`, `slideJoined`.
 
 ## Type-safe Results
 

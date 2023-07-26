@@ -1,3 +1,8 @@
+## 0.6.0
+
+- feat: add `slide` and `slideJoined` page transitions
+- **BREAKING:** increase minimum Dart version to 3.0.0
+
 ## 0.5.0
 
 - feat: add `pushWithResult` and `PopsWithResult` to achieve type-safe results
