@@ -1,3 +1,7 @@
+## 0.8.0
+
+- feat: add `pushReplacement`
+
 ## 0.7.0
 
 - feat: add `removeRoute` to remove a route from the stack

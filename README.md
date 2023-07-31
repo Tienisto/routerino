@@ -65,6 +65,9 @@ context.pushImmediately(() => MyPage());
 // push a route while removing all others
 context.pushRoot(() => MyPage());
 
+// push a route and remove the current one
+context.pushReplacement(() => MyPage());
+
 // push a route while removing all others (without animation)
 context.pushRootImmediately(() => MyPage());
 

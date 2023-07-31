@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:routerino/transitions.dart';
 
@@ -70,6 +72,17 @@ extension RouterinoExt on BuildContext {
       this,
       RouterinoTransition.noTransition.getRoute<T, W>(builder),
       (route) => false,
+    );
+  }
+
+  /// Pushes a new route and removes the current one after the transition.
+  Future<T?> pushReplacement<T, W extends Widget>(
+    SimpleWidgetBuilder<W> builder, {
+    RouterinoTransition? transition,
+  }) {
+    return Navigator.pushReplacement<T, W>(
+      this,
+      (transition ?? Routerino.transition).getRoute<T, W>(builder),
     );
   }
 
