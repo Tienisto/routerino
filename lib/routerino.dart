@@ -188,6 +188,26 @@ extension RouterinoExt on BuildContext {
       (route) => route.settings.name == pageType.toString(),
     );
   }
+
+  /// Instantly removes the specified page in the history.
+  /// Requires [RouterinoObserver] to be added to [MaterialApp].
+  ///
+  /// Usage:
+  /// context.removeRoute(LoginPage);
+  void removeRoute(Type pageType) {
+    Navigator.removeRoute(
+      this,
+      _getObserver().getLastByType(pageType),
+    );
+  }
+}
+
+RouterinoObserver _getObserver() {
+  if (_routerinoObserver == null) {
+    throw 'RouterinoObserver is not initialized. Please add to MaterialApp the following line: "navigatorObservers: [RouterinoObserver()]"';
+  }
+
+  return _routerinoObserver!;
 }
 
 /// A bottom sheet widget.
@@ -278,5 +298,71 @@ class RouterinoBottomSheet extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+RouterinoObserver? _routerinoObserver;
+
+/// A navigator observer that keeps track of the history.
+/// It is required for [Routerino.removeRoute].
+///
+/// Usage:
+/// MaterialApp(
+///   navigatorObservers: [RouterinoObserver()], <-- add this
+///   ...
+/// );
+class RouterinoObserver extends NavigatorObserver {
+  final history = <Route>[];
+
+  RouterinoObserver() {
+    _routerinoObserver = this;
+  }
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    history.add(route);
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    history.remove(route);
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    history.remove(route);
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    if (oldRoute == null || newRoute == null) {
+      return;
+    }
+
+    final index = history.indexOf(oldRoute);
+    if (index == -1) {
+      return;
+    }
+
+    history[index] = newRoute;
+  }
+
+  /// Returns the last route of the specified type.
+  Route? getLastByTypeOrNull(Type type) {
+    return history.cast<Route?>().lastWhere(
+          (element) => element!.settings.name == type.toString(),
+          orElse: () => null,
+        );
+  }
+
+  /// Returns the last route of the specified type.
+  /// Throws an exception if not found.
+  Route getLastByType(Type type) {
+    final route = getLastByTypeOrNull(type);
+    if (route == null) {
+      throw 'Route of type $type not found';
+    }
+
+    return route;
   }
 }

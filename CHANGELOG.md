@@ -1,3 +1,9 @@
+## 0.7.0
+
+- feat: add `removeRoute` to remove a route from the stack
+- feat: add `duration` to `fade`, `slide` and `slideJoined` transitions
+- **BREAKING**: `fade` transition is a function instead of a getter
+
 ## 0.6.0
 
 - feat: add `slide` and `slideJoined` page transitions

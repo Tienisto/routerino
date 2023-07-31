@@ -16,11 +16,11 @@ This **opinionated** package provides extension methods for `BuildContext` to pu
 
 ➤ **NO** to build_runner
 
-> This is necessary for type-safety but it slows down development. (errors after checkout is bad developer UX)
+> This is necessary for type-safety, but it slows down development and decreases the developer UX.
 
 ➤ **YES** to type-safety
 
-> We call widget constructors directly. No need to jump between several files.
+> We call widget constructors directly. Don't pass arbitrary objects via route settings!
 
 ➤ **YES** to sentry integration
 
@@ -82,6 +82,12 @@ context.pop();
 
 // pop until the specified page
 context.popUntil(LoginPage);
+
+// pop until the first page
+context.popUntilRoot();
+
+// remove a route from the stack
+context.removeRoute(MyPage);
 
 // push a route and wait for a result (type-safe)
 final result = await context.pushWithResult<int, PickNumberPage>(() => PickNumberPage());
@@ -194,7 +200,7 @@ MaterialApp(
 
 ## Obfuscation
 
-Routes do not have the correct class name if you obfuscate the classes.
+Routes do not have the correct class names if you enable Flutter obfuscation which makes sentry integration useless.
 
 It is up to you. I don't value obfuscation that much.
 

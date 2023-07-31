@@ -20,24 +20,27 @@ abstract class RouterinoTransition {
   /// No transition
   static const noTransition = RouterinoNoTransition();
 
-  /// Fade transition in milliseconds
-  static int fadeDuration = 300;
+  /// Default fade duration
+  static Duration fadeDuration = const Duration(milliseconds: 300);
 
   /// Fade transition
-  static get fade =>
-      RouterinoFadeTransition(Duration(milliseconds: fadeDuration));
+  static RouterinoTransition fade({
+    Duration? duration,
+  }) =>
+      RouterinoFadeTransition(duration ?? fadeDuration);
 
-  /// Slide transition in milliseconds
-  static int slideDuration = 300;
+  /// Default slide duration
+  static Duration slideDuration = const Duration(milliseconds: 300);
 
   /// Slide transition
   static RouterinoTransition slide({
+    Duration? duration,
     SlideDirection direction = SlideDirection.rightToLeft,
     Curve curve = Curves.linear,
   }) =>
       RouterinoSlideTransition(
         direction: direction,
-        duration: Duration(milliseconds: slideDuration),
+        duration: duration ?? slideDuration,
         curve: curve,
       );
 
@@ -48,12 +51,13 @@ abstract class RouterinoTransition {
   /// context.push(() => LoginPage(), transition: RouterinoTransition.slideJoined(this));
   static RouterinoTransition slideJoined(
     Widget currentPage, {
+    Duration? duration,
     SlideDirection direction = SlideDirection.rightToLeft,
     Curve curve = Curves.linear,
   }) =>
       RouterinoSlideJoinedTransition(
         direction: direction,
-        duration: Duration(milliseconds: slideDuration),
+        duration: duration ?? slideDuration,
         curve: curve,
         currentPage: currentPage,
       );
