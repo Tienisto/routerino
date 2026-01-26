@@ -1,3 +1,7 @@
+## 0.8.1
+
+- chore: migrate from GitHub to Codeberg: https://codeberg.org/Tienisto/routerino
+
 ## 0.8.0
 
 - feat: add `pushReplacement`

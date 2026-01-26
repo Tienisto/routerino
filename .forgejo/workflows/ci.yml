@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  FLUTTER_VERSION: "3.38.7"
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: codeberg-small
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: ./.forgejo/actions/setup-flutter
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: Dependencies
+        run: dart pub get
+      - name: Check format
+        run: dart format --set-exit-if-changed lib bin test
+      - name: Analyze
+        run: flutter analyze
